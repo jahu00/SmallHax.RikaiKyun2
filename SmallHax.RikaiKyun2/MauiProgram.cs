@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using SmallHax.RikaiKyun2.Services;
 
 namespace SmallHax.RikaiKyun2
 {
@@ -7,6 +8,7 @@ namespace SmallHax.RikaiKyun2
         public static MauiApp CreateMauiApp()
         {
             var builder = MauiApp.CreateBuilder();
+            builder.Services.AddSingleton<DocumentService>();
             builder
                 .UseMauiApp<App>()
                 .ConfigureFonts(fonts =>
@@ -14,6 +16,10 @@ namespace SmallHax.RikaiKyun2
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
+                /*.ConfigureMauiHandlers(h =>
+                {
+                    h.AddHandler<MainMenu, ContentPageHandler>();
+                });*/
 
 #if DEBUG
 		builder.Logging.AddDebug();

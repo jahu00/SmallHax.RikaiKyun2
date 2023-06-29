@@ -7,6 +7,8 @@
         <Label 
             Text="This is the reader"
             VerticalOptions="Center" 
-            HorizontalOptions="Center" />
+            HorizontalOptions="Center"
+            x:Name="Label"
+            />
     </VerticalStackLayout>
 </ContentPage>
