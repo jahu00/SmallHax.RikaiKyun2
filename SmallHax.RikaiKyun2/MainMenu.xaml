@@ -4,8 +4,12 @@
              xmlns:controls="clr-namespace:SmallHax.RikaiKyun2.Controls"
              x:Class="SmallHax.RikaiKyun2.MainMenu"
              Title="MainMenu">
-    <VerticalStackLayout>
-        <controls:MenuItem Text="Open" x:Name="OpenButton" Tapped="OpenButton_Tapped"/>
-        <controls:MenuItem Text="Exit" x:Name="ExitButton" Tapped="ExitButton_Tapped" />
-    </VerticalStackLayout>
+    <AbsoluteLayout Margin="-1">
+        <VerticalStackLayout AbsoluteLayout.LayoutBounds="0,0,1,1" AbsoluteLayout.LayoutFlags="All">
+            <controls:MenuItem Text="Open" x:Name="OpenButton" Tapped="OpenButton_Tapped"/>
+            <controls:MenuItem Text="Exit" x:Name="ExitButton" Tapped="ExitButton_Tapped" />
+        </VerticalStackLayout>
+        <controls:Spinner AbsoluteLayout.LayoutBounds="0,0,1,1"
+             AbsoluteLayout.LayoutFlags="All" x:Name="Spinner" IsVisible="False"/>
+    </AbsoluteLayout>
 </ContentPage>

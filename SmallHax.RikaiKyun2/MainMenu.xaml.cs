@@ -14,7 +14,8 @@ public partial class MainMenu : ContentPage
 
     private async void OpenButton_Tapped(object arg1, TappedEventArgs arg2)
     {
-        //Application.Current.MainPage = new NavigationPage(new Reader());
-        await Shell.Current.GoToAsync("//Reader");
+        //await Shell.Current.GoToAsync("//Reader");
+        //Spinner.IsRunning = true;
+        Spinner.IsVisible = true;
     }
 }

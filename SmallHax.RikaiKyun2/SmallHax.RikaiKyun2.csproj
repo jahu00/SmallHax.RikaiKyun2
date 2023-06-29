@@ -55,7 +55,16 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="Controls\Spinner.xaml.cs">
+	    <DependentUpon>Spinner.xaml</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
 	  <MauiXaml Update="Controls\MenuItem.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Controls\Spinner.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="MainMenu.xaml">
