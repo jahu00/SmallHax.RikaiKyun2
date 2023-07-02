@@ -1,3 +1,5 @@
+using Microsoft.Maui.Graphics;
+using SmallHax.RikaiKyun2.Controls;
 using SmallHax.RikaiKyun2.Services;
 
 namespace SmallHax.RikaiKyun2;
@@ -24,6 +26,17 @@ public partial class Reader : ContentPage
 
     private void OnDocumentLoaded()
     {
-        Label.Text = _documentService.Document;
+        Container.Clear();
+        var i = 0;
+        foreach (var node in _documentService.Document.Children)
+        {
+            if (i == 10)
+            {
+                return;
+            }
+            var label = new MonospaceLabel { Text = node.Value, FontSize = 52, IgnorePixelScaling = true, VerticalOptions = LayoutOptions.FillAndExpand, HorizontalOptions = LayoutOptions.FillAndExpand };
+            Container.Children.Add(label);
+            i++;
+        }
     }
 }

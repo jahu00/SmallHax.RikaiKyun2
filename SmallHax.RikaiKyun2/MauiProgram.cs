@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
+using SkiaSharp.Views.Maui.Handlers;
+using SmallHax.RikaiKyun2.Controls;
 using SmallHax.RikaiKyun2.Services;
 
 namespace SmallHax.RikaiKyun2
@@ -9,20 +11,21 @@ namespace SmallHax.RikaiKyun2
         {
             var builder = MauiApp.CreateBuilder();
             builder.Services.AddSingleton<DocumentService>();
+            builder.Services.AddSingleton<FontService>();
             builder
                 .UseMauiApp<App>()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
-                });
-                /*.ConfigureMauiHandlers(h =>
+                })
+                .ConfigureMauiHandlers(h =>
                 {
-                    h.AddHandler<MainMenu, ContentPageHandler>();
-                });*/
+                    h.AddHandler<MonospaceLabel, SKCanvasViewHandler>();
+                });
 
 #if DEBUG
-		builder.Logging.AddDebug();
+            builder.Logging.AddDebug();
 #endif
 
             return builder.Build();
