@@ -4,6 +4,8 @@
              xmlns:controls="clr-namespace:SmallHax.RikaiKyun2.Controls"
              x:Class="SmallHax.RikaiKyun2.Reader"
              Title="Reader">
-    <StackLayout x:Name="Container" HorizontalOptions="Fill" Orientation="Vertical">
-    </StackLayout>
+    <ScrollView>
+        <StackLayout x:Name="Container" HorizontalOptions="Fill" Orientation="Vertical">
+        </StackLayout>
+    </ScrollView>
 </ContentPage>

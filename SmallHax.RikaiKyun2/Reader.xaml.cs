@@ -32,9 +32,9 @@ public partial class Reader : ContentPage
         {
             if (i == 10)
             {
-                return;
+                //return;
             }
-            var label = new MonospaceLabel { Text = node.Value, FontSize = 52, IgnorePixelScaling = true, VerticalOptions = LayoutOptions.FillAndExpand, HorizontalOptions = LayoutOptions.FillAndExpand };
+            var label = new MonospaceLabel { Text = node.Value, FontSize = 52, HorizontalOptions = LayoutOptions.FillAndExpand };
             Container.Children.Add(label);
             i++;
         }
