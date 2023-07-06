@@ -12,6 +12,7 @@ namespace SmallHax.RikaiKyun2
             var builder = MauiApp.CreateBuilder();
             builder.Services.AddSingleton<DocumentService>();
             builder.Services.AddSingleton<FontService>();
+            builder.Services.AddSingleton<StyleService>();
             builder
                 .UseMauiApp<App>()
                 .ConfigureFonts(fonts =>
@@ -22,6 +23,7 @@ namespace SmallHax.RikaiKyun2
                 .ConfigureMauiHandlers(h =>
                 {
                     h.AddHandler<MonospaceLabel, SKCanvasViewHandler>();
+                    h.AddHandler<DocumentRenderer, SKCanvasViewHandler>();
                 });
 
 #if DEBUG

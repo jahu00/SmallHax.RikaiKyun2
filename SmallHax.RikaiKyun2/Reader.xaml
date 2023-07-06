@@ -4,8 +4,13 @@
              xmlns:controls="clr-namespace:SmallHax.RikaiKyun2.Controls"
              x:Class="SmallHax.RikaiKyun2.Reader"
              Title="Reader">
-    <ScrollView>
-        <StackLayout x:Name="Container" HorizontalOptions="Fill" Orientation="Vertical">
-        </StackLayout>
-    </ScrollView>
+    <Grid >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <controls:DocumentRenderer x:Name="Renderer" />
+    </Grid>
 </ContentPage>

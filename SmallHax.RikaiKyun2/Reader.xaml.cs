@@ -30,21 +30,7 @@ public partial class Reader : ContentPage
 
     private void OnDocumentLoaded()
     {
-        nodeIndex = new Dictionary<int, MonospaceLabel>();
-        Container.Clear();
-        var i = 0;
-        foreach (var node in _documentService.Document.Children)
-        {
-            if (i == 10)
-            {
-                //return;
-            }
-            var label = new MonospaceLabel { Text = node.Value, FontSize = 52, HorizontalOptions = LayoutOptions.FillAndExpand, NodeId = i };
-            label.TextTapped += OnTextTapped;
-            Container.Children.Add(label);
-            nodeIndex[i] = label;
-            i++;
-        }
+        Renderer.Document = _documentService.Document;
     }
 
     private void OnTextTapped(MonospaceLabel label, int? index)

@@ -8,7 +8,21 @@ namespace SmallHax.RikaiKyun2.Models
 {
     public class Node
     {
-        public string Value { get; set; }
-        public List<Node> Children { get; set; }
+        public int Id { get; set; }
+        public int Position { get; set; }
+        public Style Style { get; set; }
+        public string Text { get; set; }
+        public Dictionary<int, Formatting> Formatting { get; set; }
+        public Dictionary<int, Ruby> Ruby { get; set; }
+
+        public Formatting GetFormatting(int index)
+        {
+            if (Formatting == null)
+            {
+                return null;
+            }
+            Formatting.TryGetValue(index, out var formatting);
+            return formatting;
+        }
     }
 }

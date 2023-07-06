@@ -6,15 +6,23 @@ using System.Threading.Tasks;
 
 namespace SmallHax.RikaiKyun2.Models
 {
-    public class Document: Node
+    public class Document
     {
         public int Length { get; private set; }
+        public List<Node> Nodes { get; private set; } = new List<Node>();
         public static async Task<Document> FromTxt(string fileName)
         {
             var result = new Document();
             var text = await File.ReadAllTextAsync(fileName);
-            result.Children = text.Split(new char[] { '\n', '\r' }).Where(x => x.Trim() != string.Empty).Select(x => new Node() { Value = x }).ToList();
-            result.Length = result.Children.Sum(x => x.Value.Length);
+            var lines = text.Split(new char[] { '\n', '\r' }).Where(x => x.Trim() != string.Empty);
+            var i = 0;
+            foreach (var line in lines)
+            {
+                var child = new Node() { Id = i, Text = line, Position = result.Length };
+                result.Nodes.Add(child);
+                result.Length += child.Text.Length;
+                i++;
+            }
             return result;
         }
     }

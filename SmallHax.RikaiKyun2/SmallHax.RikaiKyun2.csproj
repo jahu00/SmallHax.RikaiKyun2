@@ -91,15 +91,24 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiFont Remove="Resources\Fonts\NotoSansJP-Bold.ttf" />
 	  <MauiFont Remove="Resources\Fonts\NotoSansJP-Light.ttf" />
+	  <MauiFont Remove="Resources\Fonts\NotoSerifJP-Bold.otf" />
+	  <MauiFont Remove="Resources\Fonts\NotoSerifJP-Light.otf" />
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="Resources\Fonts\NotoSansJP-Bold.ttf" />
 	  <None Remove="Resources\Fonts\NotoSansJP-Light.ttf" />
+	  <None Remove="Resources\Fonts\NotoSerifJP-Bold.otf" />
+	  <None Remove="Resources\Fonts\NotoSerifJP-Light.otf" />
 	</ItemGroup>
 
 	<ItemGroup>
+	  <EmbeddedResource Include="Resources\Fonts\NotoSansJP-Bold.ttf" />
 	  <EmbeddedResource Include="Resources\Fonts\NotoSansJP-Light.ttf" />
+	  <EmbeddedResource Include="Resources\Fonts\NotoSerifJP-Bold.otf" />
+	  <EmbeddedResource Include="Resources\Fonts\NotoSerifJP-Light.otf" />
 	</ItemGroup>
 
 	<ItemGroup>
