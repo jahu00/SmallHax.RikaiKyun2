@@ -25,11 +25,14 @@ namespace SmallHax.RikaiKyun2.Controls
         public float OldOffset { get; private set; }
         public double Progress { get; private set; }
 
-        private int? selectedNodeId;
-        private int? selectStart;
-        private int? selectEnd;
+        public int? SelectedNodeId { get; private set; }
+        public int? SelectStart { get; private set; }
+        public int? SelectEnd { get; private set; }
+
         private readonly TapGestureRecognizer tapGestureRecognizer;
         private readonly PanGestureRecognizer panGestureRecognizer;
+
+        public event Action<DocumentRenderer, TextTappedEventArgs> TextTapped;
 
         public DocumentRenderer()
         {
@@ -42,6 +45,22 @@ namespace SmallHax.RikaiKyun2.Controls
             panGestureRecognizer = new PanGestureRecognizer();
             panGestureRecognizer.PanUpdated += OnPanUpdated;
             GestureRecognizers.Add(panGestureRecognizer);
+        }
+
+        public void Select(int selectedNodeId, int start, int end)
+        {
+            SelectedNodeId = selectedNodeId;
+            SelectStart = start;
+            SelectEnd = end;
+            InvalidateSurface();
+        }
+
+        public void Deselect()
+        {
+            SelectedNodeId = null;
+            SelectStart = null;
+            SelectEnd = null;
+            InvalidateSurface();
         }
 
         private void OnPanUpdated(object sender, PanUpdatedEventArgs e)
@@ -63,7 +82,22 @@ namespace SmallHax.RikaiKyun2.Controls
 
         private void OnTapped(object sender, TappedEventArgs e)
         {
-            //throw new NotImplementedException();
+            var position = e.GetPosition(this).Value;
+            var offsetY = (float)position.Y - Offset;
+            var layout = Layouts.FirstOrDefault(layout => layout.Y <= offsetY && layout.Bottom > offsetY);
+            if (layout == null)
+            {
+                TextTapped?.Invoke(this, TextTappedEventArgs.NotFound);
+                return;
+            }
+            var offsetPosition = new SKPoint((float)position.X, offsetY - layout.Y);
+            var character = layout.Characters.FirstOrDefault(character => character.Rect.Contains(offsetPosition));
+            if (character == null)
+            {
+                TextTapped?.Invoke(this, TextTappedEventArgs.NotFound);
+                return;
+            }
+            TextTapped?.Invoke(this, new TextTappedEventArgs(character, layout.Node));
         }
 
         private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -210,13 +244,13 @@ namespace SmallHax.RikaiKyun2.Controls
 
         private void RenderLayout(SKCanvas canvas, TextLayout textLayout)
         {
-            var selectPaint = new SKPaint() { Color = SKColors.Blue };
+            var selectPaint = _styleService.GetSelectPaint();
             SKPaint paint;
             foreach (var characterData in textLayout.Characters)
             {
                 var formatting = textLayout.Node.GetFormatting(characterData.Index);
-                paint = _styleService.GetPaint(textLayout.Node.Style, formatting);
-                if (textLayout.Node.Id == selectedNodeId && characterData.Index >= selectStart && characterData.Index <= selectEnd)
+                paint = _styleService.GetTextPaint(textLayout.Node.Style, formatting);
+                if (textLayout.Node.Id == SelectedNodeId && characterData.Index >= SelectStart && characterData.Index <= SelectEnd)
                 {
                     canvas.DrawRect(characterData.Rect, selectPaint);
                 }

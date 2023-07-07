@@ -8,13 +8,12 @@ public partial class Reader : ContentPage
 {
     private DocumentService _documentService;
 
-    private int? selectedNodeId;
-
     private Dictionary<int, MonospaceLabel> nodeIndex;
 
     public Reader()
 	{
 		InitializeComponent();
+        Renderer.TextTapped += OnTextTapped;
     }
 
     protected override void OnHandlerChanged()
@@ -33,18 +32,17 @@ public partial class Reader : ContentPage
         Renderer.Document = _documentService.Document;
     }
 
-    private void OnTextTapped(MonospaceLabel label, int? index)
+    private void OnTextTapped(DocumentRenderer label, TextTappedEventArgs e)
     {
-        if (selectedNodeId.HasValue)
+        if (Renderer.SelectedNodeId.HasValue)
         {
-            nodeIndex[selectedNodeId.Value].Deselect();
+            Renderer.Deselect();
         }
-        if (!index.HasValue)
+        if (e.Character == null)
         {
             return;
         }
-        selectedNodeId = label.NodeId;
-        var maxLength = label.Text.Length - index.Value;
-        label.Select(index.Value, index.Value + Math.Min(maxLength, 12));
+        var maxLength = e.Node.Text.Length - e.Character.Index;
+        label.Select(e.Node.Id, e.Character.Index, e.Character.Index + Math.Min(maxLength, 12));
     }
 }

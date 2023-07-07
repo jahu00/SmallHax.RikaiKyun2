@@ -59,7 +59,7 @@ namespace SmallHax.RikaiKyun2.Models
 
                 var characterX = x + TextProperties.Margin.Left;
                 var characterY = y + TextProperties.Margin.Top;
-                characterData.Rect = new SKRect(characterX, characterY, characterX + characterWidth, y + lineHeight);
+                characterData.Rect = new SKRect(characterX, characterY, characterX + characterWidth, characterY + lineHeight);
                 characterData.Origin = new SKPoint(characterData.Rect.Left, characterData.Rect.Bottom + TextProperties.Offset);
 
                 x += characterWidth;

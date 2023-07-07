@@ -15,7 +15,19 @@ namespace SmallHax.RikaiKyun2.Services
             _fontService = fontService;
         }
 
-        public SKPaint GetPaint(Models.Style style, Formatting formatting)
+        public SKPaint GetSelectPaint()
+        {
+            var key = "Select";
+            if (PaintStore.TryGetValue(key, out var selectPaint))
+            {
+                return selectPaint;
+            }
+            selectPaint = new SKPaint() { Color = SKColors.LightBlue };
+            PaintStore[key] = selectPaint;
+            return selectPaint;
+        }
+
+        public SKPaint GetTextPaint(Models.Style style, Formatting formatting)
         {
             var key = style.ToString();
             if (formatting != null && formatting.Bold)
