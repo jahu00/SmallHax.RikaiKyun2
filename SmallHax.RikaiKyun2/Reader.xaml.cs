@@ -43,6 +43,10 @@ public partial class Reader : ContentPage
             return;
         }
         var maxLength = e.Node.Text.Length - e.Character.Index;
-        label.Select(e.Node.Id, e.Character.Index, e.Character.Index + Math.Min(maxLength, 12));
+        var length = Math.Min(maxLength, 12);
+        var endIndex = e.Character.Index + length;
+        var text = e.Node.Text.Substring(e.Character.Index, length);
+        label.Select(e.Node.Id, e.Character.Index, endIndex);
+        DictionaryPopup.Populate(text.Select(x => x.ToString()).ToArray());
     }
 }
