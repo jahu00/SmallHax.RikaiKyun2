@@ -1,4 +1,5 @@
-﻿using SkiaSharp;
+﻿using Microsoft.Maui.Controls;
+using SkiaSharp;
 using SkiaSharp.Views.Maui;
 using SkiaSharp.Views.Maui.Controls;
 using SmallHax.RikaiKyun2.Models;
@@ -21,15 +22,48 @@ namespace SmallHax.RikaiKyun2.Controls
         public List<TextLayout> Layouts { get; private set; } = new List<TextLayout>();
         public int NodeId { get; private set; }
         public float Offset { get; private set; }
+        public float OldOffset { get; private set; }
         public double Progress { get; private set; }
 
         private int? selectedNodeId;
         private int? selectStart;
         private int? selectEnd;
+        private readonly TapGestureRecognizer tapGestureRecognizer;
+        private readonly PanGestureRecognizer panGestureRecognizer;
 
         public DocumentRenderer()
         {
             PropertyChanged += OnPropertyChanged;
+
+            tapGestureRecognizer = new TapGestureRecognizer { Buttons = ButtonsMask.Primary };
+            tapGestureRecognizer.Tapped += OnTapped;
+            GestureRecognizers.Add(tapGestureRecognizer);
+
+            panGestureRecognizer = new PanGestureRecognizer();
+            panGestureRecognizer.PanUpdated += OnPanUpdated;
+            GestureRecognizers.Add(panGestureRecognizer);
+        }
+
+        private void OnPanUpdated(object sender, PanUpdatedEventArgs e)
+        {
+            if (e.StatusType == GestureStatus.Completed)
+            {
+                UpdateLayouts(true);
+                InvalidateSurface();
+                return;
+            }
+            if (e.StatusType == GestureStatus.Started)
+            {
+                OldOffset = Offset;
+            }
+            Offset = OldOffset + (float)e.TotalY;
+            UpdateLayouts(false);
+            InvalidateSurface();
+        }
+
+        private void OnTapped(object sender, TappedEventArgs e)
+        {
+            //throw new NotImplementedException();
         }
 
         private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -79,14 +113,34 @@ namespace SmallHax.RikaiKyun2.Controls
             }
             var width = (float)Width;
             var height = (float)Height;
-            var addWatchdog = 1024;
             var firstNode = Document.Nodes.First();
             var lastNode = Document.Nodes.Last();
+            var firstLayout = Layouts.FirstOrDefault();
             var lastLayout = Layouts.LastOrDefault();
+            var previousWatchdog = 1024;
+            while (Layouts.Count > 0 && firstLayout.Y + Offset > 0)
+            {
+                previousWatchdog--;
+                if (previousWatchdog <= 0)
+                {
+                    break;
+                }
+                if (firstLayout.Node.Id == firstNode.Id)
+                {
+                    break;
+                }
+                var node = Document.Nodes[firstLayout.Node.Id - 1];
+                var textProperties = _styleService.GetTextProperties(node.Style);
+                var layout = new TextLayout(node, width, textProperties);
+                layout.Y = firstLayout.Y - layout.Height;
+                Layouts.Add(layout);
+                firstLayout = layout;
+            }
+            var nextWatchdog = 1024;
             while (Layouts.Count == 0 || lastLayout.Bottom + Offset < height)
             {
-                addWatchdog--;
-                if (addWatchdog <= 0)
+                nextWatchdog--;
+                if (nextWatchdog <= 0)
                 {
                     break;
                 }
@@ -108,8 +162,12 @@ namespace SmallHax.RikaiKyun2.Controls
                 Layouts.Add(layout);
                 lastLayout = layout;
             }
-
-            if (lastLayout.Node.Id == lastNode.Id && lastLayout.Bottom + Offset < height)
+            firstLayout = Layouts.First();
+            if (firstLayout.Node.Id == firstNode.Id && firstLayout.Y + Offset > 0)
+            {
+                Offset = 0;
+            }
+            else if (lastLayout.Node.Id == lastNode.Id && lastLayout.Bottom + Offset < height)
             {
                 Offset += height - lastLayout.Bottom - Offset;
             }
@@ -123,9 +181,10 @@ namespace SmallHax.RikaiKyun2.Controls
                 return;
             }
             Layouts = newLayouts;
-            var firstLayout = Layouts.First();
-            Offset += firstLayout.Y;
-            Layouts.ForEach(x => { x.Y -= firstLayout.Y; });
+            firstLayout = Layouts.First();
+            var firstLayoutY = firstLayout.Y;
+            Offset += firstLayoutY;
+            Layouts.ForEach(x => { x.Y -= firstLayoutY; });
         }
 
         protected override void OnPaintSurface(SKPaintSurfaceEventArgs e)
