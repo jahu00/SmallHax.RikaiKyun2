@@ -250,7 +250,7 @@ namespace SmallHax.RikaiKyun2.Controls
             {
                 var formatting = textLayout.Node.GetFormatting(characterData.Index);
                 paint = _styleService.GetTextPaint(textLayout.Node.Style, formatting);
-                if (textLayout.Node.Id == SelectedNodeId && characterData.Index >= SelectStart && characterData.Index <= SelectEnd)
+                if (textLayout.Node.Id == SelectedNodeId && characterData.Index >= SelectStart && characterData.Index < SelectEnd)
                 {
                     canvas.DrawRect(characterData.Rect, selectPaint);
                 }

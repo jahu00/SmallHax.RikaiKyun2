@@ -32,7 +32,7 @@ public partial class Reader : ContentPage
         Renderer.Document = _documentService.Document;
     }
 
-    private void OnTextTapped(DocumentRenderer label, TextTappedEventArgs e)
+    private async void OnTextTapped(DocumentRenderer label, TextTappedEventArgs e)
     {
         if (Renderer.SelectedNodeId.HasValue)
         {
@@ -46,7 +46,17 @@ public partial class Reader : ContentPage
         var length = Math.Min(maxLength, 12);
         var endIndex = e.Character.Index + length;
         var text = e.Node.Text.Substring(e.Character.Index, length);
+        var lookups = text.Select((s, i) => text.Substring(0, text.Length - i)).ToList();
+        var results = await DictionaryPopup.Search(lookups);
+        if (results.Count > 0)
+        {
+            endIndex = e.Character.Index + results[0].Lookup.Length;
+        }
+        else
+        {
+            endIndex = e.Character.Index + 1;
+        }
         label.Select(e.Node.Id, e.Character.Index, endIndex);
-        DictionaryPopup.Populate(text.Select(x => x.ToString()).ToArray());
+        DictionaryPopup.Populate(results);
     }
 }
