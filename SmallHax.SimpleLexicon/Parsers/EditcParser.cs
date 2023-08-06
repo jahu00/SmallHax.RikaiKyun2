@@ -56,10 +56,10 @@ namespace SmallHax.SimpleLexicon.Parsers
                     Tags = new List<string>()
                 };
 
-                lexicon.Index[word.Value] = word;
+                AddWord(word.Value, word, lexicon);
                 if (!string.IsNullOrEmpty(word.Reading))
                 {
-                    lexicon.Index[word.Reading] = word;
+                    AddWord(word.Reading, word, lexicon);
                 };
 
                 var hasPriorityFlag = rowMatch.Groups["PriorityFlag"].Value == PriorityTagName;
@@ -71,5 +71,15 @@ namespace SmallHax.SimpleLexicon.Parsers
             return lexicon;
         }
 
+        public void AddWord(string key, Word word, Lexicon lexicon)
+        {
+            lexicon.Index.TryGetValue(key, out var words);
+            if (words == null)
+            {
+                words = new List<Word>();
+                lexicon.Index[key] = words;
+            }
+            words.Add(word);
+        }
     }
 }

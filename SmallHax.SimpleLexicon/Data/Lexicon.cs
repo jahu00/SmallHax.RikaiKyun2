@@ -5,6 +5,6 @@ namespace SmallHax.SimpleLexicon.Data
 {
     public class Lexicon
     {
-        public Dictionary<string, Word> Index { get; private set; } = new Dictionary<string, Word>();
+        public Dictionary<string, List<Word>> Index { get; private set; } = new Dictionary<string, List<Word>>();
     }
 }

@@ -31,24 +31,35 @@ public partial class DictionaryPopup : ContentView
 		var results = new List<SearchResult>();
 		foreach (var lookup in lookups.OrderByDescending(x => x.Length))
 		{
-			_lexicon.Index.TryGetValue(lookup, out var word);
-			if (word == null)
+			_lexicon.Index.TryGetValue(lookup, out var words);
+			if (words == null)
 			{
 				continue;
 			}
-			var result = new SearchResult { Lookup = lookup, Result = word };
-			results.Add(result);
+			var tempResult = words.Select(word => new SearchResult { Lookup = lookup, Result = word });
+			results.AddRange(tempResult);
 		}
 		return results;
 	}
 
 	public void Populate(List<SearchResult> searchResults)
 	{
-		EntriesContainer.Clear();
+		//Label.Text = "ABC";
+		//return;
+        //EntriesContainer.Clear();
+        var htmlEntries = new List<string>();
 		foreach (var searchResult in searchResults)
 		{
-			var entryControl = new DictionaryEntry(searchResult);
-			EntriesContainer.Add(entryControl);
+			//var entryControl = new DictionaryEntry(searchResult);
+			//EntriesContainer.Add(entryControl);
+			var htmlEntry = $"{searchResult.Result.Value} ";
+			if (!string.IsNullOrWhiteSpace(searchResult.Result.Reading))
+			{
+				htmlEntry += $"[{searchResult.Result.Reading}] ";
+			}
+            htmlEntry += $"- {searchResult.Result.Definition.Text}";
+			htmlEntries.Add(htmlEntry);
 		}
+		Label.Text = string.Join("<br/><br/>", htmlEntries);
 	}
 }

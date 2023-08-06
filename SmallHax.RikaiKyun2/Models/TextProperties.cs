@@ -14,5 +14,6 @@ namespace SmallHax.RikaiKyun2.Models
         public float Spacing { get; set; }
         public SKRect Margin { get; set; }
         public float Offset { get; set; }
+        public float Indent { get; set; }
     }
 }

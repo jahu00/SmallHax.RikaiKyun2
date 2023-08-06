@@ -12,7 +12,7 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <AbsoluteLayout Margin="-1">
-            <controls:DocumentRenderer x:Name="Renderer" AbsoluteLayout.LayoutBounds="0,0,1,1" AbsoluteLayout.LayoutFlags="All" />
+            <controls:DocumentRenderer x:Name="Renderer" AbsoluteLayout.LayoutBounds="0,0,1,1" AbsoluteLayout.LayoutFlags="All" Margin="25" />
             <controls:DictionaryPopup x:Name="DictionaryPopup" AbsoluteLayout.LayoutBounds="0,1,1,0.25" AbsoluteLayout.LayoutFlags="All" Margin="0" Padding="0" />
         </AbsoluteLayout>
     </Grid>

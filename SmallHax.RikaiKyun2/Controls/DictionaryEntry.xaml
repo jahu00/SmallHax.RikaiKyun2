@@ -3,18 +3,21 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="SmallHax.RikaiKyun2.Controls.DictionaryEntry">
     <Frame BorderColor="Transparent" Margin="0" Padding="0">
-        <VerticalStackLayout>
-            <Label 
+        <StackLayout Orientation="Vertical">
+            <Grid ColumnDefinitions="*">
+                <Label 
                 VerticalOptions="Center" 
                 HorizontalOptions="Start"
                 x:Name="Label"
                 Padding="10"
+                LineBreakMode="WordWrap"
                 />
+            </Grid>
             <BoxView   
                 Color="Black"  
                 Margin="0,0,0,0"                   
                 HeightRequest="2"  
                 HorizontalOptions="Fill" />
-        </VerticalStackLayout>
+        </StackLayout>
     </Frame>
 </ContentView>

@@ -10,14 +10,14 @@ namespace SmallHax.RikaiKyun2.Controls
     public class TextTappedEventArgs: EventArgs
     {
         public CharacterData Character { get; }
-        public Node Node { get; }
+        public TextNode Node { get; }
         public static TextTappedEventArgs NotFound { get; } = new TextTappedEventArgs();
         
         public TextTappedEventArgs()
         {
         }
 
-        public TextTappedEventArgs(CharacterData character, Node node)
+        public TextTappedEventArgs(CharacterData character, TextNode node)
         {
             Character = character;
             Node = node;

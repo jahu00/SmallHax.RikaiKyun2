@@ -9,7 +9,7 @@ namespace SmallHax.RikaiKyun2.Models
     public class Document
     {
         public int Length { get; private set; }
-        public List<Node> Nodes { get; private set; } = new List<Node>();
+        public List<TextNode> Nodes { get; private set; } = new List<TextNode>();
         public static async Task<Document> FromTxt(string fileName)
         {
             var result = new Document();
@@ -18,7 +18,7 @@ namespace SmallHax.RikaiKyun2.Models
             var i = 0;
             foreach (var line in lines)
             {
-                var child = new Node() { Id = i, Text = line, Position = result.Length };
+                var child = new TextNode() { Id = i, Text = line.Trim(), Position = result.Length };
                 result.Nodes.Add(child);
                 result.Length += child.Text.Length;
                 i++;

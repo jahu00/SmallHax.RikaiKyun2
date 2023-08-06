@@ -9,6 +9,7 @@ namespace SmallHax.RikaiKyun2.Models
     public enum Style
     {
         Paragraph,
-        Header
+        Header,
+        HorizontalRule
     }
 }

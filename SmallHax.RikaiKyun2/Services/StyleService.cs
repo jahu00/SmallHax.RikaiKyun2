@@ -66,10 +66,10 @@ namespace SmallHax.RikaiKyun2.Services
             switch (style)
             {
                 case Models.Style.Paragraph:
-                    properties = new TextProperties { Size = 20, LineHeight = 1.25f, Margin = new SKRect(5, 5, 5, 5), Offset = -5, Spacing = 0 };
+                    properties = new TextProperties { Size = 20, LineHeight = 1.25f, Margin = new SKRect(5, 5, 5, 5), Offset = -5, Spacing = 0, Indent = 1 };
                     break;
                 case Models.Style.Header:
-                    properties = new TextProperties { Size = 32, LineHeight = 1.25f, Margin = new SKRect(5, 5, 5, 5), Offset = -5, Spacing = 0 };
+                    properties = new TextProperties { Size = 32, LineHeight = 1.25f, Margin = new SKRect(5, 5, 5, 5), Offset = -5, Spacing = 0, Indent = 0 };
                     break;
             }
             PropertiesStore[key] = properties;

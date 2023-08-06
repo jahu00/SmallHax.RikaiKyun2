@@ -2,17 +2,9 @@
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="SmallHax.RikaiKyun2.Controls.DictionaryPopup">
-    <Frame x:Name="Frame" BorderColor="Transparent" BackgroundColor="White" Margin="0" CornerRadius="0">
-        <VerticalStackLayout>
-            <BoxView   
-                Color="Black"  
-                Margin="0,0,0,0"                   
-                HeightRequest="2"  
-                HorizontalOptions="Fill" />
-            <ScrollView x:Name="Scroll">
-                <VerticalStackLayout x:Name="EntriesContainer">
-                </VerticalStackLayout>
-            </ScrollView>
-        </VerticalStackLayout>
+    <Frame x:Name="Frame" BorderColor="Black" BackgroundColor="White" Margin="0" CornerRadius="0" VerticalOptions="Fill">
+        <ScrollView x:Name="Scroll" Orientation="Vertical">
+            <Label x:Name="Label" TextType="Html" HorizontalOptions="Start" BindingContext="{x:Reference Scroll}" WidthRequest="{Binding Path=Width}" Margin="0" Padding="0"/>
+        </ScrollView>
     </Frame>
 </ContentView>

@@ -17,10 +17,10 @@ namespace SmallHax.RikaiKyun2.Models
         public float Width { get { return _width; } set { _width = value; UpdateLayout(); } }
         public float Height { get; private set; }
         public List<CharacterData> Characters { get; private set; } = new List<CharacterData>();
-        public Node Node { get; }
+        public TextNode Node { get; }
         public TextProperties TextProperties { get; }
 
-        public TextLayout(Node node, float width, TextProperties textProperties)
+        public TextLayout(TextNode node, float width, TextProperties textProperties)
         {
             Node = node;
             Characters = Node.Text.Select((x, i) => new CharacterData { Character = x.ToString(), Index = i }).ToList();
@@ -56,7 +56,10 @@ namespace SmallHax.RikaiKyun2.Models
                     y += lineHeight;
                     continue;
                 }
-
+                if (i == 0)
+                {
+                    x += characterWidth * TextProperties.Indent;
+                }
                 var characterX = x + TextProperties.Margin.Left;
                 var characterY = y + TextProperties.Margin.Top;
                 characterData.Rect = new SKRect(characterX, characterY, characterX + characterWidth, characterY + lineHeight);

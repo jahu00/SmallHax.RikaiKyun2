@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SmallHax.RikaiKyun2.Models
 {
-    public class Node
+    public class TextNode
     {
         public int Id { get; set; }
         public int Position { get; set; }

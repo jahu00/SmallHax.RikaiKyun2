@@ -151,6 +151,8 @@ namespace SmallHax.RikaiKyun2.Controls
             var lastNode = Document.Nodes.Last();
             var firstLayout = Layouts.FirstOrDefault();
             var lastLayout = Layouts.LastOrDefault();
+
+            // Populate layouts before the first
             var previousWatchdog = 1024;
             while (Layouts.Count > 0 && firstLayout.Y + Offset > 0)
             {
@@ -170,6 +172,8 @@ namespace SmallHax.RikaiKyun2.Controls
                 Layouts.Add(layout);
                 firstLayout = layout;
             }
+
+            // Populate layouts after the last
             var nextWatchdog = 1024;
             while (Layouts.Count == 0 || lastLayout.Bottom + Offset < height)
             {
@@ -196,6 +200,8 @@ namespace SmallHax.RikaiKyun2.Controls
                 Layouts.Add(layout);
                 lastLayout = layout;
             }
+
+            // Snapt to start or end of document
             firstLayout = Layouts.First();
             if (firstLayout.Node.Id == firstNode.Id && firstLayout.Y + Offset > 0)
             {
@@ -205,10 +211,13 @@ namespace SmallHax.RikaiKyun2.Controls
             {
                 Offset += height - lastLayout.Bottom - Offset;
             }
+
+            // Remove layouts that are outside of the screen
             if (!clearInvisible)
             {
                 return;
             }
+
             var newLayouts = Layouts.Where(x => x.Bottom + Offset > 0 && x.Y + Offset < Height).ToList();
             if (newLayouts.Count == Layouts.Count)
             {
