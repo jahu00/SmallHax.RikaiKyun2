@@ -46,20 +46,20 @@ public partial class DictionaryPopup : ContentView
 	{
 		//Label.Text = "ABC";
 		//return;
-        //EntriesContainer.Clear();
-        var htmlEntries = new List<string>();
+        EntriesContainer.Clear();
+        //var htmlEntries = new List<string>();
 		foreach (var searchResult in searchResults)
 		{
-			//var entryControl = new DictionaryEntry(searchResult);
-			//EntriesContainer.Add(entryControl);
-			var htmlEntry = $"{searchResult.Result.Value} ";
+			var entryControl = new DictionaryEntry(searchResult);
+			EntriesContainer.Add(entryControl);
+			/*var htmlEntry = $"{searchResult.Result.Value} ";
 			if (!string.IsNullOrWhiteSpace(searchResult.Result.Reading))
 			{
 				htmlEntry += $"[{searchResult.Result.Reading}] ";
 			}
             htmlEntry += $"- {searchResult.Result.Definition.Text}";
-			htmlEntries.Add(htmlEntry);
+			htmlEntries.Add(htmlEntry);*/
 		}
-		Label.Text = string.Join("<br/><br/>", htmlEntries);
+		//Label.Text = string.Join("<br/><br/>", htmlEntries);
 	}
 }
