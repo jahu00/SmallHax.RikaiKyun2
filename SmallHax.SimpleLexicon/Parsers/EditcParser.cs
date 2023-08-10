@@ -15,8 +15,16 @@ namespace SmallHax.SimpleLexicon.Parsers
         private const string PriorityTagName = "P";
         private const string RowParseRule = "^(?<Kanji>.*?)\\s(?:\\[(?<Kana>.*?)\\]\\s)?(?:\\/(?<Gloss>.*?))?(?:\\/\\((?<PriorityFlag>P)\\))?\\/$";
         private const string TagFindingRule = "\\((?<Tags>[^() ]+)\\)";
+        private readonly Regex rowParseRegex;
+        private readonly Regex tagFindingRegex;
 
-        public async Task<Lexicon> Parse(Stream stream, string encodingName)
+        public EditcParser()
+        {
+            rowParseRegex = new Regex(RowParseRule, RegexOptions.Compiled);
+            tagFindingRegex = new Regex(TagFindingRule, RegexOptions.Compiled);
+        }
+
+        public async Task<Lexicon> ParseAsync(Stream stream, string encodingName)
         {
             var lexicon = new Lexicon();
             var definitions = new Dictionary<string, Definition>();
@@ -26,7 +34,7 @@ namespace SmallHax.SimpleLexicon.Parsers
             {
                 var line = await streamReader.ReadLineAsync();
 
-                var rowMatch = Regex.Match(line, RowParseRule);
+                var rowMatch = rowParseRegex.Match(line);
                 if (!rowMatch.Success)
                 {
                     throw new Exception($"Unable to parse row {line}");
@@ -37,7 +45,7 @@ namespace SmallHax.SimpleLexicon.Parsers
                 definitions.TryGetValue(gloss, out var definition);
                 if (definition == null)
                 {
-                    var tagMatchs = Regex.Matches(gloss, TagFindingRule);
+                    var tagMatchs = tagFindingRegex.Matches(gloss);
                     var tags = tagMatchs.Cast<Match>().Select(x => x.Groups["Tags"].Value.Split(',')).SelectMany(x => x).Select(x => x.Trim()).Distinct().ToList();
                     definition = new Definition
                     {

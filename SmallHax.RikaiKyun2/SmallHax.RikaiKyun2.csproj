@@ -11,12 +11,13 @@
 		<SingleProject>true</SingleProject>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<WindowsPackageType>None</WindowsPackageType>
+		<EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>
 
 		<!-- Display name -->
-		<ApplicationTitle>SmallHax.RikaiKyun2</ApplicationTitle>
+		<ApplicationTitle>RikaiKyun2</ApplicationTitle>
 
 		<!-- App Identifier -->
-		<ApplicationId>com.companyname.smallhax.rikaikyun2</ApplicationId>
+		<ApplicationId>smallhax.rikaikyun2</ApplicationId>
 		<ApplicationIdGuid>48928eff-9377-4b28-9c18-6249d8b72a0f</ApplicationIdGuid>
 
 		<!-- Versions -->

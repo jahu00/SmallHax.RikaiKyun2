@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:controls="clr-namespace:SmallHax.RikaiKyun2.Controls"
              x:Class="SmallHax.RikaiKyun2.Reader"
-             Title="Reader">
+             Title="Reader"
+             NavigationPage.HasBackButton="True">
     <Grid >
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -12,7 +13,7 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <AbsoluteLayout Margin="-1">
-            <controls:DocumentRenderer x:Name="Renderer" AbsoluteLayout.LayoutBounds="0,0,1,1" AbsoluteLayout.LayoutFlags="All" Margin="25" />
+            <controls:DocumentRenderer x:Name="Renderer" AbsoluteLayout.LayoutBounds="0,0,1,1" AbsoluteLayout.LayoutFlags="All" Margin="25" IgnorePixelScaling="True"/>
             <controls:DictionaryPopup x:Name="DictionaryPopup" AbsoluteLayout.LayoutBounds="0,1,1,0.25" AbsoluteLayout.LayoutFlags="All" Margin="0" Padding="0" />
         </AbsoluteLayout>
     </Grid>

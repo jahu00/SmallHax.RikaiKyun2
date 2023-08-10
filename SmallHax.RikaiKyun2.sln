@@ -5,11 +5,9 @@ VisualStudioVersion = 17.6.33815.320
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmallHax.RikaiKyun2", "SmallHax.RikaiKyun2\SmallHax.RikaiKyun2.csproj", "{B154A523-7982-4759-ADFD-12CB3A983039}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmallHax.Lexicon", "SmallHax.Lexicon\SmallHax.Lexicon.csproj", "{BF0B14F4-D98B-4851-AF93-F0C8E84A4C7B}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmallHax.LexiconBuilder", "SmallHax.LexiconBuilder\SmallHax.LexiconBuilder.csproj", "{690AD20D-49AF-4284-A54E-D575EB3BDA98}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmallHax.SimpleLexicon", "SmallHax.SimpleLexicon\SmallHax.SimpleLexicon.csproj", "{7BD35678-A314-4D53-89E9-8E1218A6C580}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmallHax.SimpleLexicon", "SmallHax.SimpleLexicon\SmallHax.SimpleLexicon.csproj", "{7BD35678-A314-4D53-89E9-8E1218A6C580}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +21,6 @@ Global
 		{B154A523-7982-4759-ADFD-12CB3A983039}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B154A523-7982-4759-ADFD-12CB3A983039}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B154A523-7982-4759-ADFD-12CB3A983039}.Release|Any CPU.Deploy.0 = Release|Any CPU
-		{BF0B14F4-D98B-4851-AF93-F0C8E84A4C7B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BF0B14F4-D98B-4851-AF93-F0C8E84A4C7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BF0B14F4-D98B-4851-AF93-F0C8E84A4C7B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BF0B14F4-D98B-4851-AF93-F0C8E84A4C7B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{690AD20D-49AF-4284-A54E-D575EB3BDA98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{690AD20D-49AF-4284-A54E-D575EB3BDA98}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{690AD20D-49AF-4284-A54E-D575EB3BDA98}.Release|Any CPU.ActiveCfg = Release|Any CPU

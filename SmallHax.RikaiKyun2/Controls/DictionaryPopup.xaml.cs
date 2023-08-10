@@ -19,7 +19,7 @@ public partial class DictionaryPopup : ContentView
         var parser = new EditcParser();
         var assembly = Assembly.GetExecutingAssembly();
         using var stream = assembly.GetManifestResourceStream(assembly.GetName().Name + ".Resources.Dictionaries.Japanese.edict");
-        _lexicon = await parser.Parse(stream, "euc-jp");
+        _lexicon = await parser.ParseAsync(stream, "euc-jp");
     }
 
 	public async Task<List<SearchResult>> Search(List<string> lookups)

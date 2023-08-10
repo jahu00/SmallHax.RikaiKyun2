@@ -242,10 +242,11 @@ namespace SmallHax.RikaiKyun2.Controls
             canvas.Clear();
 
             Console.WriteLine(DeviceDisplay.MainDisplayInfo.Density);
-
+            var baseMatrix = canvas.TotalMatrix;
             foreach (var layout in Layouts)
             {
-                canvas.SetMatrix(SKMatrix.CreateTranslation(0, layout.Y + Offset));
+                var matrix = baseMatrix.PreConcat(SKMatrix.CreateTranslation(0, layout.Y + Offset));
+                canvas.SetMatrix(matrix);
                 RenderLayout(canvas, layout);
             }
 

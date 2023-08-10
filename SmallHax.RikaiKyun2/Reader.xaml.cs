@@ -59,4 +59,11 @@ public partial class Reader : ContentPage
         label.Select(e.Node.Id, e.Character.Index, endIndex);
         DictionaryPopup.Populate(results);
     }
+
+    protected override bool OnBackButtonPressed()
+    {
+        //return base.OnBackButtonPressed();
+        Shell.Current.GoToAsync("//MainMenu");
+        return true;
+    }
 }
