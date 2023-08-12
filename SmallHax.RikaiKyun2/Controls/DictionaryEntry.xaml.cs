@@ -7,12 +7,12 @@ public partial class DictionaryEntry : ContentView
 	public DictionaryEntry(SearchResult searchResult)
 	{
 		InitializeComponent();
-		var text = searchResult.Result.Value;
+		var text = searchResult.Result.Spelling;
 		if (!string.IsNullOrWhiteSpace(searchResult.Result.Reading))
 		{
 			text += $" [{searchResult.Result.Reading}]";
 		}
-		text += $" {searchResult.Result.Definition.Text}";
+		text += $" {searchResult.Result.Definition}";
 		Label.Text = text;
 	}
 }

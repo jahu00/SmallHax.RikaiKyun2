@@ -6,6 +6,6 @@ namespace SmallHax.SimpleLexicon.Service
 {
     public interface IDictionaryService
     {
-        Task<IEnumerable<SearchResult>> Search(List<string> lookups);
+        Task<List<SearchResult>> Search(List<string> lookups);
     }
 }

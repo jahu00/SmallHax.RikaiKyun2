@@ -7,6 +7,6 @@ namespace SmallHax.SimpleLexicon.Data
     public class SearchResult
     {
         public string Lookup { get; set; }
-        public Word Result { get; set; }
+        public Entry Result { get; set; }
     }
 }

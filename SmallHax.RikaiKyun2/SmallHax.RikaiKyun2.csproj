@@ -100,6 +100,7 @@
 
 	<ItemGroup>
 	  <None Remove="Resources\Dictionaries\Japanese\edict" />
+	  <None Remove="Resources\Dictionaries\Japanese\edict_index" />
 	  <None Remove="Resources\Fonts\NotoSansJP-Bold.ttf" />
 	  <None Remove="Resources\Fonts\NotoSansJP-Light.ttf" />
 	  <None Remove="Resources\Fonts\NotoSerifJP-Bold.otf" />
@@ -108,8 +109,9 @@
 
 	<ItemGroup>
 	  <EmbeddedResource Include="Resources\Dictionaries\Japanese\edict">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 	  </EmbeddedResource>
+	  <EmbeddedResource Include="Resources\Dictionaries\Japanese\edict_index" />
 	  <EmbeddedResource Include="Resources\Fonts\NotoSansJP-Bold.ttf" />
 	  <EmbeddedResource Include="Resources\Fonts\NotoSansJP-Light.ttf" />
 	  <EmbeddedResource Include="Resources\Fonts\NotoSerifJP-Bold.otf" />

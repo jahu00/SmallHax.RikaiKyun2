@@ -1,5 +1,7 @@
 using SmallHax.SimpleLexicon.Data;
 using SmallHax.SimpleLexicon.Parsers;
+using SmallHax.SimpleLexicon.Service;
+using System.ComponentModel.Design;
 using System.Reflection;
 using System.Xml.Linq;
 
@@ -7,38 +9,30 @@ namespace SmallHax.RikaiKyun2.Controls;
 
 public partial class DictionaryPopup : ContentView
 {
-    private Lexicon _lexicon;
+    private DictionaryService _dictionaryService;
 
     public DictionaryPopup()
 	{
 		InitializeComponent();
 	}
 
-	public async Task LoadLexicon()
+	public async Task LoadDictionary()
 	{
-        var parser = new EditcParser();
         var assembly = Assembly.GetExecutingAssembly();
-        using var stream = assembly.GetManifestResourceStream(assembly.GetName().Name + ".Resources.Dictionaries.Japanese.edict");
-        _lexicon = await parser.ParseAsync(stream, "euc-jp");
+        var dictionaryStream = assembly.GetManifestResourceStream(assembly.GetName().Name + ".Resources.Dictionaries.Japanese.edict");
+        using var indexStream = assembly.GetManifestResourceStream(assembly.GetName().Name + ".Resources.Dictionaries.Japanese.edict_index");
+		_dictionaryService = new DictionaryService(dictionaryStream, "euc-jp");
+		await _dictionaryService.LoadIndex(indexStream);
+
     }
 
 	public async Task<List<SearchResult>> Search(List<string> lookups)
 	{
-		if (_lexicon == null)
+		if (_dictionaryService == null)
 		{
-			await LoadLexicon();
+			await LoadDictionary();
 		}
-		var results = new List<SearchResult>();
-		foreach (var lookup in lookups.OrderByDescending(x => x.Length))
-		{
-			_lexicon.Index.TryGetValue(lookup, out var words);
-			if (words == null)
-			{
-				continue;
-			}
-			var tempResult = words.Select(word => new SearchResult { Lookup = lookup, Result = word });
-			results.AddRange(tempResult);
-		}
+		var results = await _dictionaryService.Search(lookups);
 		return results;
 	}
 

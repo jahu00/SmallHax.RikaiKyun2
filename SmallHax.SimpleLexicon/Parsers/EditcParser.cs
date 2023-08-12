@@ -10,10 +10,10 @@ using System.Threading.Tasks;
 
 namespace SmallHax.SimpleLexicon.Parsers
 {
-    public class EditcParser
+    public class EditcParser: ParserBase, IParser
     {
-        private const string PriorityTagName = "P";
-        private const string RowParseRule = "^(?<Kanji>.*?)\\s(?:\\[(?<Kana>.*?)\\]\\s)?(?:\\/(?<Gloss>.*?))?(?:\\/\\((?<PriorityFlag>P)\\))?\\/$";
+        private const string newLineSequence = "\n";
+        private const string RowParseRule = "^(?<Kanji>.*?)\\s(?:\\[(?<Kana>.*?)\\]\\s)?(?:\\/(?<Gloss>.*?))?\\/$";
         private const string TagFindingRule = "\\((?<Tags>[^() ]+)\\)";
         private readonly Regex rowParseRegex;
         private readonly Regex tagFindingRegex;
@@ -24,70 +24,72 @@ namespace SmallHax.SimpleLexicon.Parsers
             tagFindingRegex = new Regex(TagFindingRule, RegexOptions.Compiled);
         }
 
-        public async Task<Lexicon> ParseAsync(Stream stream, string encodingName)
+        public Entry ParseLine(string line)
         {
-            var lexicon = new Lexicon();
-            var definitions = new Dictionary<string, Definition>();
-            var encoding = CodePagesEncodingProvider.Instance.GetEncoding(encodingName);
-            var streamReader = new StreamReader(stream, encoding);
+            var rowMatch = rowParseRegex.Match(line);
+            if (!rowMatch.Success)
+            {
+                throw new Exception($"Unable to parse row \"{line}\"");
+            }
+
+            var gloss = rowMatch.Groups["Gloss"].Value.Trim();
+
+            var tagMatchs = tagFindingRegex.Matches(gloss);
+            var tags = tagMatchs.Cast<Match>().Select(x => x.Groups["Tags"].Value.Split(',')).SelectMany(x => x).Select(x => x.Trim()).Distinct().ToList();
+
+            var word = new Entry
+            {
+                Spelling = rowMatch.Groups["Kanji"].Value.Trim(),
+                Reading = rowMatch.Groups["Kana"]?.Value.Trim(),
+                Definition = gloss,
+                Tags = tags
+            };
+            return word;
+        }
+
+        public async Task<Dictionary<string, List<uint>>> BuildIndex(Stream stream, Encoding encoding)
+        {
+            using var streamReader = new StreamReader(stream, encoding: encoding, detectEncodingFromByteOrderMarks: false, bufferSize: -1, leaveOpen: true);
+            var index = new Dictionary<string, List<uint>>();
+            var preamble = encoding.GetPreamble();
+            long position = preamble.Length;
             while (!streamReader.EndOfStream)
             {
+                // Using stream.Position is unreliable for getting the position,
+                // as it's going to be rounded to buffer size when using StreamReader.
+                // Converting string back to encoding is probably unefficient,
+                // but this only needs to be done to build index.
+                var startPosition = position;
                 var line = await streamReader.ReadLineAsync();
-
+                var encodedLine = encoding.GetBytes(line + newLineSequence);
+                position += encodedLine.Length;
                 var rowMatch = rowParseRegex.Match(line);
                 if (!rowMatch.Success)
                 {
-                    throw new Exception($"Unable to parse row {line}");
+                    continue;
                 }
-
-                var gloss = rowMatch.Groups["Gloss"].Value.Trim();
-
-                definitions.TryGetValue(gloss, out var definition);
-                if (definition == null)
-                {
-                    var tagMatchs = tagFindingRegex.Matches(gloss);
-                    var tags = tagMatchs.Cast<Match>().Select(x => x.Groups["Tags"].Value.Split(',')).SelectMany(x => x).Select(x => x.Trim()).Distinct().ToList();
-                    definition = new Definition
-                    {
-                        Text = gloss,
-                        Tags = tags,
-                    };
-
-                    definitions[gloss] = definition;
-                }
-
-                var word = new Word
-                {
-                    Value = rowMatch.Groups["Kanji"].Value.Trim(),
-                    Reading = rowMatch.Groups["Kana"]?.Value.Trim(),
-                    Definition = definition,
-                    Tags = new List<string>()
-                };
-
-                AddWord(word.Value, word, lexicon);
-                if (!string.IsNullOrEmpty(word.Reading))
-                {
-                    AddWord(word.Reading, word, lexicon);
-                };
-
-                var hasPriorityFlag = rowMatch.Groups["PriorityFlag"].Value == PriorityTagName;
-                if (hasPriorityFlag)
-                {
-                    word.Tags.Add(PriorityTagName);
-                }
+                var kanji = rowMatch.Groups["Kanji"].Value.Trim();
+                var reading = rowMatch.Groups["Kana"]?.Value.Trim();
+                UpdateIndex(kanji, index, startPosition);
+                UpdateIndex(reading, index, startPosition);
             }
-            return lexicon;
+            return index;
         }
 
-        public void AddWord(string key, Word word, Lexicon lexicon)
+        private void UpdateIndex(string word, Dictionary<string, List<uint>> index, long position)
         {
-            lexicon.Index.TryGetValue(key, out var words);
-            if (words == null)
+            if (string.IsNullOrWhiteSpace(word))
             {
-                words = new List<Word>();
-                lexicon.Index[key] = words;
+                return;
             }
-            words.Add(word);
+            if (!index.TryGetValue(word, out var positions))
+            {
+                positions = new List<uint>();
+                index[word] = positions;
+            }
+            positions.Add((uint)position);
         }
+
+        
     }
 }
