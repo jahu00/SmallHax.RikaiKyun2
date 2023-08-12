@@ -25,6 +25,11 @@ public partial class MainMenu : ContentPage
 
     private async void OpenButton_Tapped(object arg1, TappedEventArgs arg2)
     {
+        var readPermissionStatus = await Permissions.CheckStatusAsync<Permissions.StorageRead>();
+        if (readPermissionStatus != PermissionStatus.Granted)
+        {
+            await Permissions.RequestAsync<Permissions.StorageRead>();
+        }
         var result = await FilePicker.PickAsync(PickOptions.Default);
         if (result == null)
         {
