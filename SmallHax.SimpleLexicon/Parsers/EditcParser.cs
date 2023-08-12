@@ -1,4 +1,5 @@
 ﻿using SmallHax.SimpleLexicon.Data;
+using SmallHax.SimpleLexicon.Extensions;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -55,14 +56,9 @@ namespace SmallHax.SimpleLexicon.Parsers
             long position = preamble.Length;
             while (!streamReader.EndOfStream)
             {
-                // Using stream.Position is unreliable for getting the position,
-                // as it's going to be rounded to buffer size when using StreamReader.
-                // Converting string back to encoding is probably unefficient,
-                // but this only needs to be done to build index.
                 var startPosition = position;
                 var line = await streamReader.ReadLineAsync();
-                var encodedLine = encoding.GetBytes(line + newLineSequence);
-                position += encodedLine.Length;
+                position = streamReader.GetPosition();
                 var rowMatch = rowParseRegex.Match(line);
                 if (!rowMatch.Success)
                 {
