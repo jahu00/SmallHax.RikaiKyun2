@@ -2,9 +2,20 @@
 using System.Text;
 
 var service = new EditcParser();
-using var stream = File.OpenRead("edict");
-var encoding = CodePagesEncodingProvider.Instance.GetEncoding("euc-jp");
-var index = await service.BuildIndex(stream, encoding);
-await service.SaveIndex(index, "index_euc-jp", encoding);
-await service.SaveIndex(index, "index", Encoding.UTF8);
+
+using (var stream = File.OpenRead("edict"))
+{
+    var encoding = CodePagesEncodingProvider.Instance.GetEncoding("euc-jp");
+    var index = await service.BuildIndex(stream, encoding);
+    await service.SaveIndex(index, "index_euc-jp", encoding);
+    stream.Seek(0, SeekOrigin.Begin);
+    var reader = new StreamReader(stream, encoding);
+    var text = reader.ReadToEnd();
+    File.WriteAllText("edict_utf8", text, Encoding.UTF8);
+}
+using (var stream = File.OpenRead("edict_utf8"))
+{
+    var index = await service.BuildIndex(stream, Encoding.UTF8);
+    await service.SaveIndex(index, "index_utf8", Encoding.UTF8);
+}
 return;

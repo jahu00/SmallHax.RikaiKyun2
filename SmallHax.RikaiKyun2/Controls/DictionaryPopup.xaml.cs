@@ -19,9 +19,9 @@ public partial class DictionaryPopup : ContentView
 	public async Task LoadDictionary()
 	{
         var assembly = Assembly.GetExecutingAssembly();
-        var dictionaryStream = assembly.GetManifestResourceStream(assembly.GetName().Name + ".Resources.Dictionaries.Japanese.edict");
-        using var indexStream = assembly.GetManifestResourceStream(assembly.GetName().Name + ".Resources.Dictionaries.Japanese.edict_index");
-		_dictionaryService = new DictionaryService(dictionaryStream, "euc-jp");
+        var dictionaryStream = assembly.GetManifestResourceStream(assembly.GetName().Name + ".Resources.Dictionaries.Japanese.edict_utf8");
+        using var indexStream = assembly.GetManifestResourceStream(assembly.GetName().Name + ".Resources.Dictionaries.Japanese.edict_index_utf8");
+		_dictionaryService = new DictionaryService(dictionaryStream, "UTF8");
 		await _dictionaryService.LoadIndex(indexStream);
 
     }
