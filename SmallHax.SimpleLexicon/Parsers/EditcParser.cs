@@ -11,15 +11,15 @@ using System.Threading.Tasks;
 
 namespace SmallHax.SimpleLexicon.Parsers
 {
-    public class EditcParser: ParserBase, IParser
+    public class EdictParser: ParserBase, IParser
     {
-        private const string newLineSequence = "\n";
-        private const string RowParseRule = "^(?<Kanji>.*?)\\s(?:\\[(?<Kana>.*?)\\]\\s)?(?:\\/(?<Gloss>.*?))?\\/$";
-        private const string TagFindingRule = "\\((?<Tags>[^() ]+)\\)";
-        private readonly Regex rowParseRegex;
-        private readonly Regex tagFindingRegex;
+        protected const string newLineSequence = "\n";
+        protected const string RowParseRule = "^(?<Kanji>.*?)\\s(?:\\[(?<Kana>.*?)\\]\\s)?(?:\\/(?<Gloss>.*?))?\\/$";
+        protected const string TagFindingRule = "\\((?<Tags>[^() ]+)\\)";
+        protected readonly Regex rowParseRegex;
+        protected readonly Regex tagFindingRegex;
 
-        public EditcParser()
+        public EdictParser()
         {
             rowParseRegex = new Regex(RowParseRule, RegexOptions.Compiled);
             tagFindingRegex = new Regex(TagFindingRule, RegexOptions.Compiled);
@@ -48,7 +48,7 @@ namespace SmallHax.SimpleLexicon.Parsers
             return word;
         }
 
-        public async Task<Dictionary<string, List<uint>>> BuildIndex(Stream stream, Encoding encoding)
+        public virtual async Task<Dictionary<string, List<uint>>> BuildIndex(Stream stream, Encoding encoding)
         {
             using var streamReader = new StreamReader(stream, encoding: encoding, detectEncodingFromByteOrderMarks: false, bufferSize: -1, leaveOpen: true);
             var index = new Dictionary<string, List<uint>>();
@@ -72,7 +72,7 @@ namespace SmallHax.SimpleLexicon.Parsers
             return index;
         }
 
-        private void UpdateIndex(string word, Dictionary<string, List<uint>> index, long position)
+        protected void UpdateIndex(string word, Dictionary<string, List<uint>> index, long position)
         {
             if (string.IsNullOrWhiteSpace(word))
             {

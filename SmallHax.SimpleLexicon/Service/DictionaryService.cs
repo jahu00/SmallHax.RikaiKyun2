@@ -14,7 +14,7 @@ namespace SmallHax.SimpleLexicon.Service
         private Dictionary<string, List<uint>> index;
         private readonly Stream dictionaryStream;
         private readonly StreamReader dictionaryStreamReader;
-        private IParser parser = new EditcParser();
+        private IParser parser = new EdictParser();
         private Encoding dictionaryEncoding;
         private Encoding indexEncoding;
 
