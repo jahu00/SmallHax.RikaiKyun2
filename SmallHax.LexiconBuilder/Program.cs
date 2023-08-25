@@ -1,5 +1,15 @@
 ﻿using SmallHax.SimpleLexicon.Parsers;
+using SmallHax.SimpleLexicon.Service;
 using System.Text;
+
+using (var stream = File.OpenRead("deinflect"))
+{
+    var deinflectService = new DeinflectSerive(stream);
+    var word = "たべられなくて";
+    var lookups = deinflectService.Deinflect(word);
+    lookups = deinflectService.CleanLookups(lookups);
+    return;
+}
 
 var service = new EdictStringParser();
 

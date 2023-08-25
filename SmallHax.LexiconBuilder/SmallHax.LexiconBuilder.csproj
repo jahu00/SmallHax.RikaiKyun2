@@ -17,6 +17,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="deinflect">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="edict">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
